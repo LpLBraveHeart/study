@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 public class Consumer {
+
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory=new ConnectionFactory();
         factory.setHost("127.0.0.1");
