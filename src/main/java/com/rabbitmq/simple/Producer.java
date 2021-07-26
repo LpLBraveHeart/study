@@ -1,12 +1,13 @@
-package com.rabbitmq;
+package com.rabbitmq.simple;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class Consumer {
-
+public class Producer {
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory=new ConnectionFactory();
         factory.setHost("127.0.0.1");
@@ -16,13 +17,9 @@ public class Consumer {
         factory.setPassword("guest");
         Connection connection=factory.newConnection();
         Channel channel=connection.createChannel();
+
         channel.queueDeclare("hello",false,false,false,null);
-        channel.basicConsume("hello",true,new DefaultConsumer(channel){
-            @Override
-            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                System.out.println(new String(body));
-            }
-        });
+        channel.basicPublish("","hello",null,"hello rabbitmq".getBytes());
         channel.close();
         connection.close();
     }
